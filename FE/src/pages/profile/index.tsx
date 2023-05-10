@@ -45,17 +45,53 @@ export default function Profile() {
       activeComponent = <ProfileInfo />; // userData
   }
 
+  const navlinkStyle = "cursor-pointer p-2";
+  const activeLinkStyle = "cursor-pointer bg-blue-300 rounded-lg p-2";
+
   return (
-    <div className="w-full flex border-2 rounded-lg">
-      <div className="border-2 rounded-lg h-min p-5 w-1/5">
-        <ul>
-          <li onClick={() => setActiveBtn("profile")}>Profile Info</li>
-          <li onClick={() => setActiveBtn("posted")}>Posted Jobs</li>
-          <li onClick={() => setActiveBtn("applied")}>Applied Jobs</li>
-          <li onClick={() => setActiveBtn("history")}>History</li>
-        </ul>
+    <div className="w-screen border-2 rounded-lg">
+      <div className="border-2 bg-gray-300 text-center font-semibold text-xl h-20 flex justify-center">
+        <h1 className="flex items-center justify-center">
+          {currentUser?.email}
+        </h1>
       </div>
-      <div className="border-2 w-4/5 rounded-lg">{activeComponent}</div>
+      <div className="flex justify-center m-10 gap-5">
+        <div className="border-2 rounded-lg w-1/5">
+          <ul className="flex flex-col gap-5 text-start text-xl font-semibold m-5">
+            <li
+              className={
+                activeBtn == "profile" ? activeLinkStyle : navlinkStyle
+              }
+              onClick={() => setActiveBtn("profile")}
+            >
+              Profile Info
+            </li>
+            <li
+              className={activeBtn == "posted" ? activeLinkStyle : navlinkStyle}
+              onClick={() => setActiveBtn("posted")}
+            >
+              Posted Jobs
+            </li>
+            <li
+              className={
+                activeBtn == "applied" ? activeLinkStyle : navlinkStyle
+              }
+              onClick={() => setActiveBtn("applied")}
+            >
+              Applied Jobs
+            </li>
+            <li
+              className={
+                activeBtn == "history" ? activeLinkStyle : navlinkStyle
+              }
+              onClick={() => setActiveBtn("history")}
+            >
+              History
+            </li>
+          </ul>
+        </div>
+        <div className="border-2 w-3/5 rounded-lg">{activeComponent}</div>
+      </div>
     </div>
   );
 }
