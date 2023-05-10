@@ -26,9 +26,9 @@ export default function Register(): JSX.Element {
     axios
       .post("http://localhost:8008/user/add", data)
       .then((res) => {
-        if (res.data.success) {
-          router.push("/success");
-        }
+        // if (res.data.success) {
+        //   router.push("/success");
+        // }
       })
       .catch((err) => console.log(err));
   }

@@ -5,35 +5,46 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import SuccessModal from "@/components/SuccessModal";
 import { useRouter } from "next/router";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
+// import { ToastContainer, toast } from 'react-toastify';
 
 export default function Job({ data: job }: { data: JobType }): JSX.Element {
-  const { currentUser } = useUserContext();
+  const { currentUser, token } = useUserContext();
   const [isApplied, setIsApplied] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
+  // const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
   const router = useRouter();
 
-  const checkApplied = () => {
-    const checkBody = {
-      jobId: job._id,
-      userId: currentUser?._id,
-    };
+  // const checkApplied = () => {
+  //   const checkBody = {
+  //     jobId: job._id,
+  //     userId: currentUser?._id,
+  //   };
 
-    axios
-      .post("http://localhost:8008/application/check", checkBody)
-      .then((res) => {
-        if (res.data.message) {
-          setIsApplied(true);
-        }
-      });
-  };
+  //   axios
+  //     .post("http://localhost:8008/application/check", checkBody)
+  //     .then((res) => {
+  //       if (res.data.message) {
+  //         setIsApplied(true);
+  //       }
+  //     });
+  // };
 
   useEffect(() => {
-    const token = Cookies.get("token");
-    if (!token) {
+    // const token = Cookies.get("token");
+    if (!currentUser) {
+      // toast.success('Ta login hiinuu')
       router.push("/login");
+    } else {
+      checkApplied();
     }
-    checkApplied();
+    async function checkApplied() {
+      await axios(`http://localhost:8008/application/check?${job._id}`, {
+        headers: {
+          token: token,
+        },
+      });
+    }
+    // checkApplied();
   }, [currentUser, router]);
 
   function handleApply() {
@@ -45,10 +56,11 @@ export default function Job({ data: job }: { data: JobType }): JSX.Element {
     axios
       .post("http://localhost:8008/application/add", newApply)
       .then((res) => {
-        console.log(res.data);
-        if (res.data) {
-          setShowSuccessModal(true);
-        }
+        // console.log(res.data);
+        // if (res.data) {
+        //   setShowSuccessModal(true);
+        // }
+        // toast.success("bla bla")
       })
       .catch(() => setIsApplied(true));
   }
@@ -81,7 +93,7 @@ export default function Job({ data: job }: { data: JobType }): JSX.Element {
             </button>
           </div>
 
-          {showSuccessModal && <SuccessModal setModal={setShowSuccessModal} />}
+          <SuccessModal btnText="Test" />
         </div>
       )}
     </>

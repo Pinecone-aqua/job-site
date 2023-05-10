@@ -1,10 +1,10 @@
 import Filter from "@/components/Filter";
 import JobCard from "@/components/JobCard";
-import {JobType} from "@/util/types";
+import { JobType } from "@/util/types";
 import Link from "next/link";
 
-export default function Home(props: {jobs: JobType[]}): JSX.Element {
-  const {jobs} = props;
+export default function Home(props: { jobs: JobType[] }): JSX.Element {
+  const { jobs } = props;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function changeHandler(e: any): void {
@@ -48,7 +48,10 @@ export default function Home(props: {jobs: JobType[]}): JSX.Element {
   );
 }
 
+//serverSideProps
+
 export async function getStaticProps() {
+  //yaaraltai bish ch gesen paginated bolgono
   try {
     const response = await fetch("http://localhost:8008/job/all");
     const jobs = await response.json();

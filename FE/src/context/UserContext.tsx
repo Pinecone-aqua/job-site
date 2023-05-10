@@ -20,6 +20,7 @@ export interface IUserContext {
   handleLogout: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   submitHandler: (e: any) => void;
+  token: string | undefined;
 }
 
 export const UserContext = createContext<IUserContext>({} as IUserContext);
@@ -32,17 +33,20 @@ export const useUserContext = () => useContext(UserContext);
 
 export const UserContextProvider = ({ children }: UserProviderType) => {
   const [currentUser, setCurrentUser] = useState<UserType | null>();
+  const [token, setToken] = useState<string | undefined>();
   const router = useRouter();
 
   useEffect(() => {
     const token = Cookies.get("token");
     if (token) {
+      setToken(token);
       setCurrentUser(jwtDecode(token));
     }
   }, []);
 
   function handleLogout() {
     setCurrentUser(null);
+    setToken(undefined);
     Cookies.remove("token");
   }
 
@@ -73,7 +77,13 @@ export const UserContextProvider = ({ children }: UserProviderType) => {
 
   return (
     <UserContext.Provider
-      value={{ currentUser, setCurrentUser, submitHandler, handleLogout }}
+      value={{
+        currentUser,
+        setCurrentUser,
+        submitHandler,
+        handleLogout,
+        token,
+      }}
     >
       {children}
     </UserContext.Provider>

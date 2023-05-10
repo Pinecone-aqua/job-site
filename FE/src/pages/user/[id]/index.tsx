@@ -2,10 +2,29 @@ import {useUserContext} from "@/context/UserContext";
 import {UserType} from "@/util/types";
 import {GetStaticProps, GetStaticPropsContext} from "next";
 import Link from "next/link";
+import { useState } from "react";
+
+
+
+
 
 export default function User({data: user}: {data: UserType}): JSX.Element {
+  const [activeBtn, setActiveBtn] = useState<"profile" | 'posted' | 'applied'>('profile') 
   console.log("user profile page", user);
   const {currentUser} = useUserContext();
+
+
+
+  let activeComponent = <Profile />;
+  switch(activeBtn){
+    case 'profile': activeComponent = <Profile userInfo={data}/>;
+    break
+    case 'posted': activeComponent = <Posted jobList={jobList} />;
+    break
+    case 'Applied': activeComponent = <Applied joblist={jobList}/>;
+    default
+  }
+
 
   return (
     <div>
@@ -15,7 +34,7 @@ export default function User({data: user}: {data: UserType}): JSX.Element {
       <div className="relative border-2 rounded-lg w-[1280px] h-screen mx-auto p-5 flex gap-5 justify-center">
         <div className="border-2 rounded-lg h-min p-5 w-1/5">
           <ul>
-            <Link href={`/user/${currentUser?._id}`}>
+            {/* <Link href={`/user/${currentUser?._id}`}>
               <li className="">profile</li>
             </Link>
             <Link href={`/user/${currentUser?._id}/postedjobs`}>
@@ -26,10 +45,15 @@ export default function User({data: user}: {data: UserType}): JSX.Element {
             </Link>
             <Link href={`/user/${currentUser?._id}`}>
               <li>history</li>
-            </Link>
+            </Link> */}
+            <button onClick={()=>setActiveBtn('profile')}>profile</button>
+            <button onClick={()=>setActiveBtn('posted')}>posted</button>
+            <button onClick={()=>setActiveBtn('profile')}>profile</button>
+            <button onClick={()=>setActiveBtn('profile')}>profile</button>
           </ul>
         </div>
-        <div className="flex border-2 rounded-lg w-3/5 justify-between p-5 h-min">
+              {activeComponent}
+        {/* <div className="flex border-2 rounded-lg w-3/5 justify-between p-5 h-min">
           <div className="flex flex-col gap-5 items-center w-1/5">
             <div className="">
               <picture>
@@ -93,7 +117,7 @@ export default function User({data: user}: {data: UserType}): JSX.Element {
           <div className="place-self-end shadow-md bottom-1 right-1 border-2 rounded-lg h-min px-2 hover:bg-slate-400 hover:text-white text-center cursor-pointer w-1/5">
             edit
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

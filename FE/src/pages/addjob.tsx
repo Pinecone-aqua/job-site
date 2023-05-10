@@ -72,12 +72,12 @@ export default function AddJob(): JSX.Element {
               </label>
             </div>
             <label className="select">
-                <p> Job Category</p>
-                <select className="input" name="category" required>
-                  <option value="text">developer</option>
-                  <option value="text">design</option>
-                </select>
-              </label>
+              <p> Job Category</p>
+              <select className="input" name="category" required>
+                <option value="text">developer</option>
+                <option value="text">design</option>
+              </select>
+            </label>
             <div className="inputs_field lg-d-flex">
               <label className="inputs_right_form">
                 <p>Job Description</p>
@@ -101,21 +101,21 @@ export default function AddJob(): JSX.Element {
                 />
               </label>
             </div>
-             
-              <label className="select">
-                <p> Job Location</p>
-                <input
-                  className="input"
-                  type="Address Type"
-                  name="location"
-                  placeholder="Location"
-                  required
-                />
-              </label>
+
+            <label className="select">
+              <p> Job Location</p>
+              <input
+                className="input"
+                type="Address Type"
+                name="location"
+                placeholder="Location"
+                required
+              />
+            </label>
 
             <button className="btn">SUBMIT</button>
           </form>
-          {showSuccessModal && <SuccessModal setModal={setShowSuccessModal} />}
+          {/* {showSuccessModal && <SuccessModal setModal={setShowSuccessModal} />} */}
         </div>
       ) : (
         <div>login to post job</div>

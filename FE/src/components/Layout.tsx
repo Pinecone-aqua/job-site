@@ -1,12 +1,13 @@
-import {ReactNode} from "react";
+import { ReactNode } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+// import { ToastContainer } from "react-toastify";
 
 interface PropType {
   children: ReactNode;
 }
 
-export default function Layout({children}: PropType): JSX.Element {
+export default function Layout({ children }: PropType): JSX.Element {
   return (
     <div className="mx-auto relative">
       <Header />
@@ -14,6 +15,7 @@ export default function Layout({children}: PropType): JSX.Element {
         {children}
       </main>
       <Footer />
+      {/* <ToastContainer /> */}
     </div>
   );
 }
