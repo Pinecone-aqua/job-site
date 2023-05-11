@@ -8,7 +8,6 @@ import {
   Response as Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserDto } from './user.dto';
 import { User } from './user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
