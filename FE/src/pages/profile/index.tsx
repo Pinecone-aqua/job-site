@@ -49,15 +49,10 @@ export default function Profile() {
   const activeLinkStyle = "cursor-pointer bg-blue-300 rounded-lg p-2";
 
   return (
-    <div className="w-screen border-2 rounded-lg">
-      <div className="border-2 bg-gray-300 text-center font-semibold text-xl h-20 flex justify-center">
-        <h1 className="flex items-center justify-center">
-          {currentUser?.email}
-        </h1>
-      </div>
-      <div className="flex justify-center m-10 gap-5">
-        <div className="border-2 rounded-lg w-1/5">
-          <ul className="flex flex-col gap-5 text-start text-xl font-semibold m-5">
+    <div className="w-screen border-2 rounded-lg m-5">
+      <div className="m-5 md:flex lg:flex md:justify-center md:gap-5 lg:justify-center lg:gap-5 ">
+        <div className="border-2 rounded-lg shadow-md md:w-1/5 md:h-full lg:h-full">
+          <ul className="flex justify-center gap-5 text-start text-sm font-semibold m-5 md:flex md:flex-col ">
             <li
               className={
                 activeBtn == "profile" ? activeLinkStyle : navlinkStyle
@@ -90,7 +85,9 @@ export default function Profile() {
             </li>
           </ul>
         </div>
-        <div className="border-2 w-3/5 rounded-lg">{activeComponent}</div>
+        <div className="border-2 mt-5 min-h-screen rounded-lg shadow-md md:w-3/5 md:m-0 md:min-h-screen ">
+          {activeComponent}
+        </div>
       </div>
     </div>
   );

@@ -40,6 +40,7 @@ export class UserService {
 
   async logIn(email: string, pass: string): Promise<User> {
     const user = await this.userModel.findOne({ email });
+    console.log('user login', user);
     if (user.password === pass) {
       return user;
     } else {

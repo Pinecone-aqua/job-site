@@ -51,7 +51,7 @@ export const UserContextProvider = ({ children }: UserProviderType) => {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function submitHandler(event: any): void {
+  async function submitHandler(event: any): void {
     event.preventDefault();
 
     const target = event.currentTarget.elements;
@@ -61,18 +61,18 @@ export const UserContextProvider = ({ children }: UserProviderType) => {
       password: target.password.value,
     };
     console.log("user login", userLogin);
-    axios
-      .post(`http://localhost:8008/user/login`, userLogin)
-      .then((res) => {
-        console.log("response", res);
-        if (res.status === 201) {
-          setCurrentUser(res.data);
-          router.push("/");
-        } else {
-          console.log("fail");
-        }
-      })
-      .catch((err) => console.log(err));
+    const result = await axios.post(
+      `http://localhost:8008/user/login`,
+      userLogin
+    );
+    if (result.status === 201) {
+      const token = Cookies.set("token", result.data.token);
+      if (token) {
+        setToken(token);
+        setCurrentUser(jwtDecode(token));
+        router.push("/");
+      }
+    }
   }
 
   return (

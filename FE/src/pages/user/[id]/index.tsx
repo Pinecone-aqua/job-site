@@ -23,7 +23,7 @@ export default function User({data: user}: {data: UserType}): JSX.Element {
     break
     case 'Applied': activeComponent = <Applied joblist={jobList}/>;
     default
-  }
+  };
 
 
   return (

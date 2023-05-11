@@ -17,7 +17,7 @@ export class JobService {
   }
 
   async findAll(): Promise<Job[]> {
-    return this.jobModel.find().exec();
+    return this.jobModel.find().exec(); //sort.({createdAt: -1})
   }
 
   async findJob(id: string): Promise<Job> {
