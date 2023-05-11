@@ -28,6 +28,10 @@ export const UserContext = createContext<IUserContext>({} as IUserContext);
 interface UserProviderType {
   children: ReactNode;
 }
+interface LoginType {
+  email: string;
+  password: string;
+}
 
 export const useUserContext = () => useContext(UserContext);
 
@@ -56,7 +60,7 @@ export const UserContextProvider = ({ children }: UserProviderType) => {
 
     const target = event.currentTarget.elements;
 
-    const userLogin: UserType = {
+    const userLogin: LoginType = {
       email: target.email.value,
       password: target.password.value,
     };
