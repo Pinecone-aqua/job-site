@@ -7,7 +7,6 @@ import {
   Response as Res,
   UseGuards,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { Request, Response, query } from 'express';
 // import { Query } from 'mongoose';
@@ -17,16 +16,9 @@ import { JobService } from './job.service';
 import { CheckRoleGuard } from 'src/role/role.guard';
 import { JwtService } from '@nestjs/jwt';
 import { CheckRole } from 'src/role/role.decorator';
-import { CheckRoleGuard } from 'src/role/role.guard';
-import { JwtService } from '@nestjs/jwt';
-import { CheckRole } from 'src/role/role.decorator';
 
 @Controller('job')
 export class JobController {
-  constructor(
-    private readonly jobService: JobService,
-    private readonly jwtService: JwtService,
-  ) {}
   constructor(
     private readonly jobService: JobService,
     private readonly jwtService: JwtService,
@@ -40,7 +32,7 @@ export class JobController {
   @Post('add')
   @UseGuards(CheckRoleGuard)
   @CheckRole('CLIENT')
-  async createJob(@Req() Req: Request, @Res() Res: Response) {
+
   // @UseGuards(CheckRoleGuard)
   // @CheckRole('CLIENT')
   async createJob(@Req() req: Request, @Res() res: Response) {
