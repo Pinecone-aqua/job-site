@@ -4,14 +4,13 @@ import { Injectable } from '@nestjs/common';
 import { Job } from './job.schema';
 @Injectable()
 export class JobService {
+  [x: string]: any;
   constructor(
     @InjectModel('Job') private jobModel: Model<Job>,
     @InjectConnection() private connection: Connection,
   ) {}
 
   async addJob(body: Job): Promise<Job> {
-    console.log(body.wage);
-
     const createJob = new this.jobModel({ ...body, wage: body.wage });
     return createJob.save();
   }
@@ -21,15 +20,27 @@ export class JobService {
   }
 
   async findJob(id: string): Promise<Job> {
-    console.log('find Job id', id);
     const result = await this.jobModel.findById(id).exec();
-    console.log(' found job', result);
+    return result;
+  }
+  async filetredJob(query: { category: any; search: any }): Promise<Job[]> {
+    const { category, search } = query;
+    if (category === 'all') {
+      const result = await this.jobModel.find({
+        title: { $regex: new RegExp(search, 'i') },
+      });
+      return result;
+    }
+    const result = await this.jobModel.find({
+      category,
+      title: { $regex: new RegExp(search, 'i') },
+    });
+    console.log(' found job filterJobs ===> ', result);
     return result;
   }
 
   async generateStaticId(): Promise<Job[]> {
     const query = await this.jobModel.find({}).select({ _id: 1 });
-    // console.log('static paths', query);
     return query;
   }
 

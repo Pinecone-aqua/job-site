@@ -6,8 +6,11 @@ import {
   Request as Req,
   Response as Res,
   UseGuards,
+  Query,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Request, Response, query } from 'express';
+// import { Query } from 'mongoose';
+// import { Query } from '@nestjs/common';
 import { Job } from './job.schema';
 import { JobService } from './job.service';
 import { CheckRoleGuard } from 'src/role/role.guard';
@@ -29,11 +32,14 @@ export class JobController {
   @Post('add')
   @UseGuards(CheckRoleGuard)
   @CheckRole('CLIENT')
-  async createJob(@Req() Req: Request, @Res() Res: Response) {
+
+  // @UseGuards(CheckRoleGuard)
+  // @CheckRole('CLIENT')
+  async createJob(@Req() req: Request, @Res() res: Response) {
     try {
-      console.log('request body ', Req.body);
-      const result = await this.jobService.addJob(Req.body);
-      return Res.status(200).json({ success: true, data: result });
+      console.log('add job req body ', req.body);
+      const result = await this.jobService.addJob(req.body);
+      return res.status(200).json({ success: true, data: result });
     } catch (error) {
       console.log({ error: error });
     }
@@ -45,9 +51,22 @@ export class JobController {
     return this.jobService.generateStaticId();
   }
 
-  @Get('/:id')
+  @Get('singleJob/:id')
   getJob(@Param('id') id: string) {
+    console.log('job ID', id);
     return this.jobService.findJob(id);
+  }
+
+  @Get('filter')
+  filetredJob(@Query() query: { category: string; search: string }) {
+    return this.jobService.filetredJob(query);
+  }
+
+  @Get('query')
+  async search(@Req() Req: Request, @Res() Res: Response) {
+    const query = Req.query;
+    console.log('query : =>  ', query);
+    return Res.status(200);
   }
 
   @Get('posted/:postedBy')

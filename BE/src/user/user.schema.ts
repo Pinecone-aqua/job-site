@@ -4,8 +4,6 @@ import { now } from 'mongoose';
 @Schema()
 export class User {
   @Prop()
-  _id?: string;
-  @Prop()
   firstName: string;
   @Prop()
   lastName: string;
