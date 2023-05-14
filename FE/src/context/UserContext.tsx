@@ -36,7 +36,7 @@ interface LoginType {
 export const useUserContext = () => useContext(UserContext);
 
 export const UserContextProvider = ({ children }: UserProviderType) => {
-  const [currentUser, setCurrentUser] = useState<UserType | null>();
+  const [currentUser, setCurrentUser] = useState<UserType | null | undefined>();
   const [token, setToken] = useState<string | undefined>();
   const router = useRouter();
 
@@ -47,7 +47,7 @@ export const UserContextProvider = ({ children }: UserProviderType) => {
       setCurrentUser(jwtDecode(token));
       router.push("/");
     }
-  }, []);
+  }, [token]);
 
   function handleLogout() {
     setCurrentUser(null);
@@ -56,7 +56,7 @@ export const UserContextProvider = ({ children }: UserProviderType) => {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async function submitHandler(event: any): void {
+  async function submitHandler(event: any) {
     event.preventDefault();
 
     const target = event.currentTarget.elements;

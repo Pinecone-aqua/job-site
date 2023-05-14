@@ -1,30 +1,25 @@
-import {useUserContext} from "@/context/UserContext";
-import {UserType} from "@/util/types";
-import {GetStaticProps, GetStaticPropsContext} from "next";
+import { useUserContext } from "@/context/UserContext";
+import { UserType } from "@/util/types";
+import { GetStaticProps, GetStaticPropsContext } from "next";
 import Link from "next/link";
 import { useState } from "react";
 
-
-
-
-
-export default function User({data: user}: {data: UserType}): JSX.Element {
-  const [activeBtn, setActiveBtn] = useState<"profile" | 'posted' | 'applied'>('profile') 
+export default function User({ data: user }: { data: UserType }): JSX.Element {
+  const [activeBtn, setActiveBtn] = useState<"profile" | "posted" | "applied">(
+    "profile"
+  );
   console.log("user profile page", user);
-  const {currentUser} = useUserContext();
+  const { currentUser } = useUserContext();
 
-
-
-  let activeComponent = <Profile />;
-  switch(activeBtn){
-    case 'profile': activeComponent = <Profile userInfo={data}/>;
-    break
-    case 'posted': activeComponent = <Posted jobList={jobList} />;
-    break
-    case 'Applied': activeComponent = <Applied joblist={jobList}/>;
-    default
-  };
-
+  // let activeComponent = <Profile />;
+  // switch(activeBtn){
+  //   case 'profile': activeComponent = <Profile userInfo={data}/>;
+  //   break
+  //   case 'posted': activeComponent = <Posted jobList={jobList} />;
+  //   break
+  //   case 'Applied': activeComponent = <Applied joblist={jobList}/>;
+  //   default
+  // }
 
   return (
     <div>
@@ -46,13 +41,13 @@ export default function User({data: user}: {data: UserType}): JSX.Element {
             <Link href={`/user/${currentUser?._id}`}>
               <li>history</li>
             </Link> */}
-            <button onClick={()=>setActiveBtn('profile')}>profile</button>
-            <button onClick={()=>setActiveBtn('posted')}>posted</button>
-            <button onClick={()=>setActiveBtn('profile')}>profile</button>
-            <button onClick={()=>setActiveBtn('profile')}>profile</button>
+            <button onClick={() => setActiveBtn("profile")}>profile</button>
+            <button onClick={() => setActiveBtn("posted")}>posted</button>
+            <button onClick={() => setActiveBtn("profile")}>profile</button>
+            <button onClick={() => setActiveBtn("profile")}>profile</button>
           </ul>
         </div>
-              {activeComponent}
+        {activeComponent}
         {/* <div className="flex border-2 rounded-lg w-3/5 justify-between p-5 h-min">
           <div className="flex flex-col gap-5 items-center w-1/5">
             <div className="">
@@ -126,8 +121,8 @@ export default function User({data: user}: {data: UserType}): JSX.Element {
 export const getStaticPaths = async () => {
   const result = await fetch(`http://localhost:8008/user/user_id`);
   const resultUser = await result.json();
-  const paths = await resultUser.map((id: {_id: string}) => ({
-    params: {id: id._id},
+  const paths = await resultUser.map((id: { _id: string }) => ({
+    params: { id: id._id },
   }));
   return {
     paths,
