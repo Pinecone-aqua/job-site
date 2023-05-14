@@ -31,6 +31,7 @@ export class Job {
   category: string;
 
   @Prop({ default: now() })
+  @Prop({ default: now() })
   createdDate: Date;
 }
 

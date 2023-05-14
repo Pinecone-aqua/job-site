@@ -29,6 +29,7 @@ export default function AddJob(): JSX.Element {
       wage: Number(target.wage.value),
       requirement: target.requirement.value,
       location: target.location.value,
+      category: target.category.value,
       // contractType: target.contractType.value,
     };
     console.log("new job", newJob);

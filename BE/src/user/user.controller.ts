@@ -11,9 +11,15 @@ import { UserService } from './user.service';
 import { User } from './user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { Request, Response } from 'express';
 
 @Controller('user')
 export class UserController {
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+  ) {}
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,

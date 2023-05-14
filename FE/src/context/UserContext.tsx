@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import jwtDecode from "jwt-decode";
 import Cookies from "js-cookie";
 import { UserType } from "@/util/types";
-import axios from "axios";
+// import axios from "axios";
 import { useRouter } from "next/router";
 import {
   ReactNode,
@@ -10,7 +11,6 @@ import {
   useEffect,
   useState,
 } from "react";
-
 export interface IUserContext {
   currentUser: UserType | null | undefined;
 
@@ -45,6 +45,7 @@ export const UserContextProvider = ({ children }: UserProviderType) => {
     if (token) {
       setToken(token);
       setCurrentUser(jwtDecode(token));
+      router.push("/");
     }
   }, []);
 
