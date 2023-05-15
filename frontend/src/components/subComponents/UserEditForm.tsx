@@ -59,6 +59,15 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
     });
   };
 
+  const showInfo = () => {
+    toast.current.show({
+      severity: "success",
+      summary: "success",
+      detail: "user information successfully saved",
+      life: 3000,
+    });
+  };
+
   const handleAddSkill = () => {
     setSkills([...skills, ""]);
   };
@@ -233,7 +242,7 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
               className="block text-gray-700 font-bold mb-2"
               htmlFor="phoneNumber"
             >
-              Phone number:d
+              Phone number:
             </label>
             <input
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -278,6 +287,21 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
               min={0}
               placeholder={user.phoneNumber}
               onChange={handleChange}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 font-bold mb-2"
+              htmlFor="phoneNumber"
+            >
+              Phone number:
+            </label>
+            <input
+              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="phoneNumber"
+              type="number"
+              min={0}
+              placeholder={user.phoneNumber}
             />
           </div>
           <div className="mb-4">
