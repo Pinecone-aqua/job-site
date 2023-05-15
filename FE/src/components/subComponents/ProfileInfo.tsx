@@ -77,7 +77,7 @@ export default function ProfileInfo(): JSX.Element {
           <Dialog
             header="Settings"
             visible={visible}
-            style={{ width: "60vw", height: "80vh" }}
+            style={{ width: "60vw", height: "90vh" }}
             onHide={() => setVisible(false)}
           >
             <UserEditForm user={user} setVisible={setVisible} />

@@ -15,7 +15,7 @@ export type UserType = {
   _id?: string;
   firstName: string;
   lastName: string;
-  password: string;
+  password?: string;
   email: string;
   gender?: string;
   phoneNumber?: number;
