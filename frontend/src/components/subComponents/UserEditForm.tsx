@@ -19,7 +19,7 @@ interface RequestData {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function UserEditForm({ user, setVisible }: any): JSX.Element {
   const { currentUser } = useUserContext();
-  const router = useRouter()
+  const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const toast = useRef<any>(null);
   console.log("user", user);
@@ -47,6 +47,15 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
     setUserData({
       ...userData,
       [event.target.name]: event.target.value,
+    });
+  };
+
+  const showInfo = () => {
+    toast.current.show({
+      severity: "success",
+      summary: "success",
+      detail: "user information successfully saved",
+      life: 3000,
     });
   };
 
@@ -118,10 +127,9 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
         "Content-Type": "multipart/form-data",
       },
     }).then((res) => {
-      if(res.data.message){
-        setVisible(false),
-        showInfo()
-    }
+      if (res.data.message) {
+        setVisible(false), showInfo();
+      }
     });
   };
 
@@ -215,24 +223,6 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
               id="email"
               type="email"
               placeholder={user.email}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="phoneNumber"
-            >
-              Phone number:
-            </label>
-            <input
-              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="phoneNumber"
-              type="number"
-              name="phoneNumber"
-              min={0}
-              placeholder={user.phoneNumber}
-              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
