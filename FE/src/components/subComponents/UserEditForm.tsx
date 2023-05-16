@@ -7,6 +7,7 @@ import { Dialog } from "primereact/dialog";
 import { UserType } from "@/util/types";
 import axios from "axios";
 import { useUserContext } from "@/context/UserContext";
+import { useRouter } from "next/router";
 
 interface RequestData {
   firstName?: string;
@@ -18,6 +19,7 @@ interface RequestData {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function UserEditForm({ user, setVisible }: any): JSX.Element {
   const { currentUser } = useUserContext();
+  const router = useRouter()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const toast = useRef<any>(null);
   console.log("user", user);
@@ -105,17 +107,22 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
     if (image) {
       formData.append("image", image);
     }
-    formData.append("body", JSON.stringify(requestData));
+    formData.append("data", JSON.stringify(requestData));
     formData.append("skills", JSON.stringify(skills));
 
     axios({
       method: "PATCH",
-      url: `http://localhost:8008/user/edit/`,
+      url: `http://localhost:8008/user/${currentUser?._id}`,
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    }).then((res) => console.log(res));
+    }).then((res) => {
+      if(res.data.message){
+        setVisible(false),
+        showInfo()
+    }
+    });
   };
 
   return (
