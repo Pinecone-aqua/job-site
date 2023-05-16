@@ -42,49 +42,6 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
     });
   };
 
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setUserData({
-      ...userData,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const showInfo = () => {
-    toast.current.show({
-      severity: "success",
-      summary: "success",
-      detail: "user information successfully saved",
-      life: 3000,
-    });
-  };
-
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setUserData({
-      ...userData,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const showInfo = () => {
-    toast.current.show({
-      severity: "success",
-      summary: "success",
-      detail: "user information successfully saved",
-      life: 3000,
-    });
-  };
-
-  const showInfo = () => {
-    toast.current.show({
-      severity: "success",
-      summary: "success",
-      detail: "user information successfully saved",
-      life: 3000,
-    });
-  };
-
   const handleAddSkill = () => {
     setSkills([...skills, ""]);
   };
@@ -282,8 +239,10 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="phoneNumber"
               type="number"
+              name="phoneNumber"
               min={0}
               placeholder={user.phoneNumber}
+              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
