@@ -1,15 +1,20 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Request as Req,
   Response as Res,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')
 export class UserController {
@@ -54,5 +59,12 @@ export class UserController {
   @Get('/:id')
   getUser(@Param('id') id: string) {
     return this.userService.findUser(id);
+  }
+
+  @Patch('edit')
+  @UseInterceptors(FileInterceptor('image'))
+  updateUser(@UploadedFile() file, @Body() body: any) {
+    console.log(file);
+    console.log(body);
   }
 }

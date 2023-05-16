@@ -21,7 +21,7 @@ export type UserType = {
   phoneNumber?: number;
   image?: string;
   skills?: [string];
-  joinDate: string;
+  joinDate?: string;
 };
 
 export type ApplicationType = {

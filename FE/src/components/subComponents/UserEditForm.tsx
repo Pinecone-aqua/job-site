@@ -1,18 +1,32 @@
 // import { UserType } from "@/util/types";
 // import { eventNames } from "process";
-import { useState, useRef } from "react";
-import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+import { useState, useRef, ChangeEvent } from "react";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { UserType } from "@/util/types";
+import axios from "axios";
+import { useUserContext } from "@/context/UserContext";
+
+interface RequestData {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: number | undefined;
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function UserEditForm({ user, setVisible }: any): JSX.Element {
+  const { currentUser } = useUserContext();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const toast = useRef<any>(null);
   console.log("user", user);
-  const [userInfo, setUserInfo] = useState<UserType>()
+  const [userData, setUserData] = useState<UserType>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: undefined,
+  });
   const [modalVisible, setModalVisible] = useState(false);
   const [skills, setSkills] = useState<string[]>([""]);
   const [image, setImage] = useState<File | null>(null);
@@ -23,6 +37,14 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
       summary: "success",
       detail: "user information successfully saved",
       life: 3000,
+    });
+  };
+
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setUserData({
+      ...userData,
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -39,9 +61,10 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("image", event.target.files);
+
     if (event.target.files && event.target.files.length > 0) {
       setImage(event.target.files[0]);
-      console.log(image);
     }
   };
 
@@ -54,19 +77,45 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
   //eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (event: any): void => {
     console.log("submit");
+    console.log("skills", skills);
+    console.log("userData:", userData);
     event.preventDefault();
+
+    const requestData: RequestData = {};
+    if (userData.firstName.trim() !== "") {
+      requestData["firstName"] = userData.firstName.trim();
+    }
+    if (userData.lastName.trim() !== "") {
+      requestData["lastName"] = userData.lastName.trim();
+    }
+    if (userData.email.trim() !== "") {
+      requestData["email"] = userData.email.trim();
+    }
+    if (userData.phoneNumber !== undefined) {
+      requestData["phoneNumber"] = userData.phoneNumber;
+    }
+
+    console.log("request data:", requestData);
+
     const formData = new FormData();
 
-    skills.forEach((skill, index) =>
-      formData.append(`skills[${index}]`, skill)
-    );
+    // skills.forEach((skill, index) =>
+    //   formData.append(`skills[${index}]`, skill)
+    // );
     if (image) {
       formData.append("image", image);
     }
+    formData.append("body", JSON.stringify(requestData));
+    formData.append("skills", JSON.stringify(skills));
 
-   
-    
-
+    axios({
+      method: "PATCH",
+      url: `http://localhost:8008/user/edit/`,
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }).then((res) => console.log(res));
   };
 
   return (
@@ -74,26 +123,31 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
       <Toast ref={toast} />
 
       <div className="card flex justify-content-center">
-        <form className="max-w-lg mx-auto mt-4 p-6 bg-white rounded-md shadow-md">
+        <form
+          id="myForm"
+          method="POST"
+          encType="multipart/form-data"
+          className="max-w-lg mx-auto mt-4 p-6 bg-white rounded-md shadow-md"
+        >
           <Dialog
-        className="text-center"
-        header="Confirmation"
-        visible={modalVisible}
-        onHide={() => setModalVisible(false)}
-      >
-        <div className="p-3">Save changes to user information ? </div>
-        <div className="flex justify-center gap-3">
-          <Button
-            onClick={(event) => {
-              handleSubmit(event);
-              setModalVisible(false);
-            }}
+            className="text-center"
+            header="Confirmation"
+            visible={modalVisible}
+            onHide={() => setModalVisible(false)}
           >
-            yes
-          </Button>
-          <Button onClick={() => setModalVisible(false)}>no</Button>
-        </div>
-      </Dialog>
+            <div className="p-3">Save changes to user information ? </div>
+            <div className="flex justify-center gap-3">
+              <Button
+                onClick={(event) => {
+                  handleSubmit(event);
+                  setModalVisible(false);
+                }}
+              >
+                yes
+              </Button>
+              <Button onClick={() => setModalVisible(false)}>no</Button>
+            </div>
+          </Dialog>
           <div className="mb-4">
             <label
               className="block text-gray-700 font-bold mb-2"
@@ -105,6 +159,7 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="image"
               type="File"
+              name="image"
               placeholder="image"
               onChange={handleImageChange}
             />
@@ -122,6 +177,7 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
               type="text"
               name="firstName"
               placeholder={user.firstName}
+              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
@@ -137,6 +193,7 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
               type="text"
               name="lastName"
               placeholder={user.lastName}
+              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
@@ -151,6 +208,7 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
               id="email"
               type="email"
               placeholder={user.email}
+              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
@@ -161,12 +219,13 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
               Phone number:
             </label>
             <input
-              
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="phoneNumber"
               type="number"
+              name="phoneNumber"
               min={0}
               placeholder={user.phoneNumber}
+              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
@@ -208,8 +267,10 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
 
           <div className="flex items-center justify-between">
             <button
-              onClick={() => {setModalVisible(true); confirm}}
-              
+              onClick={() => {
+                setModalVisible(true);
+                confirm;
+              }}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
             >
@@ -218,7 +279,6 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
             <button
               className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
-              
               onClick={() => setVisible(false)}
             >
               cancel
