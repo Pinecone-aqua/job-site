@@ -59,6 +59,14 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
     });
   };
 
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setUserData({
+      ...userData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   const handleAddSkill = () => {
     setSkills([...skills, ""]);
   };
@@ -72,6 +80,8 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("image", event.target.files);
+
     console.log("image", event.target.files);
 
     if (event.target.files && event.target.files.length > 0) {
@@ -223,6 +233,24 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
               id="email"
               type="email"
               placeholder={user.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 font-bold mb-2"
+              htmlFor="phoneNumber"
+            >
+              Phone number:
+            </label>
+            <input
+              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="phoneNumber"
+              type="number"
+              name="phoneNumber"
+              min={0}
+              placeholder={user.phoneNumber}
+              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
