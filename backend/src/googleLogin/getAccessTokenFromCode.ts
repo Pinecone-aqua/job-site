@@ -11,7 +11,7 @@ export async function getAccessTokenFromCode(code: any) {
   });
 
   const { access_token }: any = await fetch(
-    `${process.env.NEXT_PUBLIC_AUTH_HOST}token`,
+    `https://oauth2.googleapis.com/token`,
     {
       method: 'POST',
       headers: {
