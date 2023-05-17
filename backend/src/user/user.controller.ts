@@ -11,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { Multer } from 'multer'
+import { Multer } from 'multer';
 import { User } from './user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
@@ -69,48 +69,48 @@ export class UserController {
     @Param('id') id: string,
     @Req() req: Request,
     @Res() res: Response,
-    @UploadedFile() file: Express.Multer.File
-  ) :Promise<any> {
-    
-    const {data, skills} = req.body
-      const userData = {
-        image: "", 
-        ...JSON.parse(data),
-        skills: JSON.parse(skills)
-      }
-    if(file){
-      const imageUrl = await this.uploadFileToFirebase(file)
-      userData.image = imageUrl
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<any> {
+    const { data, skills } = req.body;
+    const userData = {
+      image: '',
+      ...JSON.parse(data),
+      skills: JSON.parse(skills),
+    };
+    if (file) {
+      const imageUrl = await this.uploadFileToFirebase(file);
+      userData.image = imageUrl;
     }
 
-    const updatedUser = await this.userService.updateUser(id, userData)
-    if(updatedUser){
-      res.status(200).json({message: true})
+    const updatedUser = await this.userService.updateUser(id, userData);
+    if (updatedUser) {
+      res.status(200).json({ message: true });
     } else {
-      res.status(400).json({message: false})
+      res.status(400).json({ message: false });
     }
   }
 
-  private async uploadFileToFirebase(file: Express.Multer.File): Promise<string> {
-    const {originalname, buffer, mimetype} = file
+  private async uploadFileToFirebase(
+    file: Express.Multer.File,
+  ): Promise<string> {
+    const { originalname, buffer, mimetype } = file;
 
-    const blob = storageBucket.file(originalname)
+    const blob = storageBucket.file(originalname);
     const blobWriter = blob.createWriteStream({
       metadata: {
-        contentType: mimetype
-      }
-    })
+        contentType: mimetype,
+      },
+    });
 
     return new Promise((resolve, reject) => {
       blobWriter.on('finish', () => {
-        const publicUrl = `https://storage.googleapis.com/${storageBucket.name}/${blob.name}`
-        resolve(publicUrl)
-      })
+        const publicUrl = `https://storage.googleapis.com/${storageBucket.name}/${blob.name}`;
+        resolve(publicUrl);
+      });
       blobWriter.on('error', (error) => {
-        reject(error)
-      })
-      blobWriter.end(buffer)
-    })
+        reject(error);
+      });
+      blobWriter.end(buffer);
+    });
   }
-
 }

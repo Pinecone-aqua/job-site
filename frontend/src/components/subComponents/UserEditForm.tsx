@@ -7,7 +7,7 @@ import { Dialog } from "primereact/dialog";
 import { UserType } from "@/util/types";
 import axios from "axios";
 import { useUserContext } from "@/context/UserContext";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 
 interface RequestData {
   firstName?: string;
@@ -19,7 +19,7 @@ interface RequestData {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function UserEditForm({ user, setVisible }: any): JSX.Element {
   const { currentUser } = useUserContext();
-  const router = useRouter();
+  // const router = useRouter()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const toast = useRef<any>(null);
   console.log("user", user);
