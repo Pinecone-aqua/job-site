@@ -42,6 +42,23 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
     });
   };
 
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setUserData({
+      ...userData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const showInfo = () => {
+    toast.current.show({
+      severity: "success",
+      summary: "success",
+      detail: "user information successfully saved",
+      life: 3000,
+    });
+  };
+
   const handleAddSkill = () => {
     setSkills([...skills, ""]);
   };
