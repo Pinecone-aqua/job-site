@@ -76,6 +76,7 @@ export class GoogleLoginController {
       email: user.email,
       _id: user._id,
       image: user.image,
+      phoneNumber: user.phoneNumber,
     };
     // const token = await this.jwtService.signAsync(payload);
     const token = await this.jwtService.signAsync(payload, {
@@ -86,6 +87,6 @@ export class GoogleLoginController {
     res
       .status(200)
       .cookie('token', token)
-      .redirect(`${process.env.CLIENT_PORT}`);
+      .redirect(`http://localhost:${process.env.CLIENT_PORT}`);
   }
 }

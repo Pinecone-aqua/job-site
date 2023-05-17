@@ -1,4 +1,5 @@
 import * as admin from 'firebase-admin';
+// import * as serviceAccount from '../firebase-admin-sdk.json';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const serviceAccount = require('../firebase-admin-sdk.json');

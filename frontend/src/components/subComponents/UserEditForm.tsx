@@ -4,7 +4,7 @@ import { useState, useRef, ChangeEvent } from "react";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
-import { UserType } from "@/util/types";
+// import { UserType } from "@/util/types";
 import axios from "axios";
 import { useUserContext } from "@/context/UserContext";
 // import { useRouter } from "next/router";
@@ -91,6 +91,7 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
     if (userData.email.trim() !== "") {
       requestData["email"] = userData.email.trim();
     }
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (userData.phoneNumber !== undefined) {
       requestData["phoneNumber"] = userData.phoneNumber;
     }
@@ -107,11 +108,12 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
 
     axios({
       method: "PATCH",
-      url: `${process.env.NEXT_PUBLIC_JOBSITE_HOST}${currentUser?._id}`,
+      url: `${process.env.NEXT_PUBLIC_JOBSITE_HOST}user/${currentUser?._id}`,
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }).then((res: any) => {
       if (res.data.message) {
         setVisible(false), showInfo();
@@ -209,23 +211,6 @@ export default function UserEditForm({ user, setVisible }: any): JSX.Element {
               id="email"
               type="email"
               placeholder={user.email}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="phoneNumber"
-            >
-              Phone number:
-            </label>
-            <input
-              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="phoneNumber"
-              type="number"
-              name="phoneNumber"
-              min={0}
-              placeholder={user.phoneNumber}
               onChange={handleChange}
             />
           </div>
