@@ -1,5 +1,6 @@
-import { ApplicationType, UserType } from "@/util/types";
-import { useEffect, useState } from "react";
+import {ApplicationType, UserType} from "@/util/types";
+import moment from "moment";
+import {useEffect, useState} from "react";
 
 interface PropType {
   selectedJobId: string | undefined;
@@ -46,16 +47,35 @@ export default function Applicants({
   }
 
   return (
-    <div className="applicants-page">
-      applicants for job
+    <div className="applicants-page flex flex-col gap-4">
       {applicants?.map((applicant, i) => (
         <div
           key={i}
-          className="applicants-card border-2 border-solid border-black"
+          className="applicant-card flex gap-5 shadow-md"
           onClick={() => showSingleApplicant(applicant._id)}
         >
-          <div>{applicant.userId.firstName}</div>
-          <div>{applicant.createdDate}</div>
+          <div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className="applicant-card-img"
+              src={applicant.userId.image}
+              alt={applicant.userId.firstName}
+            />
+          </div>
+          <div>
+            <div>
+              {applicant.userId.firstName} {applicant.userId.lastName}
+            </div>
+            <div>Applied {moment(applicant.createdDate).calendar()}</div>
+            <div>{applicant.userId.gender}</div>
+            <div>Email: {applicant.userId.email}</div>
+            <div>Phone: {applicant.userId.phoneNumber}</div>
+          </div>
+          <div>
+            <div className="border-2 border-solid">
+              CV: {applicant.userId.cv}
+            </div>
+          </div>
         </div>
       ))}
     </div>
